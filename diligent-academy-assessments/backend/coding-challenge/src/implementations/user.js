@@ -1,21 +1,31 @@
+import { Library } from "../sealed/library";
+
 export class User {
     constructor() {
         this.books = [];
     }
 
     borrow(book, library) {
-        throw new Error('Not implemented');
+        if (library.getBooks().includes(book)) {
+            this.books.push(book);
+            library.removeBook(book);
+        } else throw new Error("Library doesn't have the requested book available");
     }
 
+
     hasBook(book) {
-        throw new Error('Not implemented');
+        return this.books.includes(book);
     }
 
     return(book, library) {
-        throw new Error('Not implemented');
+        if (this.hasBook(book)) {
+            this.books = this.books.filter(b => b !== book);
+            library.addBook(book);
+            return true;
+        } else return false;
     }
 
     getBookNames() {
-        throw new Error('Not implemented');
+        return this.books.map(b => b.name);
     }
 }
